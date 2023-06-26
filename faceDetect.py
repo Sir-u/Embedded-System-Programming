@@ -1,5 +1,6 @@
 import cv2
 import dlib
+from imutils import face_utils
 
 # 눈깜박임 감지를 위한 상수 값 설정
 EAR_THRESHOLD = 0.3  # EAR 임계값
@@ -28,6 +29,9 @@ video_capture = cv2.VideoCapture(0)
 frame_counter = 0
 blink_counter = 0
 eyes_closed = False
+left_eye = 0
+right_eye = 0
+ear = 0
 
 while True:
     # 비디오 프레임 읽기
@@ -66,7 +70,8 @@ while True:
     # 프레임에 정보 표시
     cv2.putText(frame, "Blinks: {}".format(blink_counter), (10, 30),
                 cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 0, 255), 2)
-    cv2.putText(frame, "EAR: {:.2f}".format(ear), (300, 30),
+    if ear is not None:
+        cv2.putText(frame, "EAR: {:.2f}".format(ear), (300, 30),
                 cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 0, 255), 2)
     if eyes_closed:
         cv2.putText(frame, "Eyes Closed", (10, 60),
